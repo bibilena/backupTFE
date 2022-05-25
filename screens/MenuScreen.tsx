@@ -1,67 +1,29 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useState } from "react"
 import {
     StyleSheet,
     Text,
     View,
-    Image,
     ScrollView,
     SafeAreaView,
-    Pressable
+    
   } from 'react-native';
   import { Button } from 'react-native-elements';
   import { getAuth, signOut } from 'firebase/auth';
-  import { getDatabase, ref, onValue, set, get } from 'firebase/database';
-  import axios from "axios";
-
-  //import { useAuthentication } from '../utils/hooks/useAuthentication';
-import { doc, documentId } from "firebase/firestore";
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from '@react-navigation/native';
-import { StackNavigationProp } from "@react-navigation/stack";
-
-/*function User({sand}){
-  useEffect(() => {
-    const subscriber = firestore().collection('Sandiwch').doc(sand).get().then(documentSnapshot => {
-      console.log('Sandwich existing: ', documentSnapshot.exists);
-      if (documentSnapshot.exists) {
-        console.log('User data: ', documentSnapshot.data());
-    }
-  })
-}*/
+import { count } from "../utils/hooks/counter";
+import { StackScreenProps } from '@react-navigation/stack';
 
 
 
-export default function Menu() {
+  
+
+
+
+const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) =>  {
     const [shouldShow, setShouldShow] = useState(true);
     const [shouldShow2, setShouldShow2] = useState(true);
     //const { user } = useAuthentication();
     const auth = getAuth(); 
-
-
-
-    const database = getDatabase();
-    const reference = ref(database, "Sandwichs")
-    onValue(reference, (snapshot) => {
-      const a = snapshot.exists();
-      const name = snapshot.child("Americain");
-      console.log(name);
-
-      const baseUrl = "https://reqres.in";
-
-
-      /*axios({
-        method: "get",
-        url: '${baseUrl}/api/users/1',
-      }).then((response) => {
-        console.log(response.data);
-      });*/
- 
-    
-      
-      
-
-      });
-
+    const name = ["Dagobert", "Americain"]
 
   return (
     <SafeAreaView style={styles.container}>
@@ -72,17 +34,20 @@ export default function Menu() {
           <View style={styles.container2}>
             <Text style={styles.nomSand} onPress={() => setShouldShow(!shouldShow)}>
               
-              Dagobert
+              {name[0]} 
               
             </Text>
 
+            {count}
+
             {shouldShow ? (
             <Text style={styles.TextIngredients}>
-                subscriber
+                subscriberd
             </Text>
             ) : null}
             <Text style={styles.nomSand} onPress={() => setShouldShow2(!shouldShow2)}>
-                Americain
+                {name[1]}
+
             </Text>
             {shouldShow2 ? (
             <Text style={styles.TextIngredients}>
@@ -93,8 +58,10 @@ export default function Menu() {
             
           </View>
           <View style={styles.container4}>
-            <Button title="Sign Out" buttonStyle={styles.button} onPress={() => signOut(auth)}  />
+            <Button title="Personnaliser" buttonStyle={styles.buttonPers} onPress={() => navigation.navigate('Personnaliser')} />
+            <Button title="Logout" type="outline" buttonStyle={styles.button} onPress={() => signOut(auth)}  />
           </View>
+          
         </ScrollView>
         <View style={styles.container3}>
             <Button style={styles.footer} title="Panier" />
@@ -155,7 +122,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
     backgroundColor: "#2E2B2B",
-    paddingHorizontal: 25
+    paddingHorizontal: 32
+    },
+
+    buttonPers: {
+      width: "125%",
+    borderRadius: 25,
+    height: 50,
+    marginTop: 20,
+    marginBottom: 10,
+    backgroundColor: "#2E2B2B",
+    paddingHorizontal: 40
     },
 
     TextIngredients: {
@@ -186,3 +163,5 @@ const styles = StyleSheet.create({
     },
 
 });
+
+export default Menu;

@@ -34,7 +34,7 @@ const SignInScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titre}>Signin screen!</Text>
+      <Text style={styles.titre}>Sign in!</Text>
 
       {!!value.error && <View style={styles.error}><Text>{value.error}</Text></View>}
 
