@@ -1,29 +1,85 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
     StyleSheet,
     Text,
     View,
     ScrollView,
     SafeAreaView,
-    
+    Alert
   } from 'react-native';
   import { Button } from 'react-native-elements';
   import { getAuth, signOut } from 'firebase/auth';
 import { count } from "../utils/hooks/counter";
 import { StackScreenProps } from '@react-navigation/stack';
 
+import { collection, addDoc, getDocs, DocumentData, SnapshotOptions, SnapshotMetadata } from "firebase/firestore"; 
+import fireDB from "../config/firebase";
+
+async function addData(){
+  try{
+    await addDoc(collection(fireDB, "Sandwichs"), {Nom: "Raclette", Prix: 3.5, Description: "Jambon serrano, formage à raclette, pommes de terre "})
+  }
+  catch(error){
+    Alert.alert("erreur", "une erreur a été rencontrée")
+  }
+}
 
 
-  
+
+
+
 
 
 
 const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) =>  {
     const [shouldShow, setShouldShow] = useState(true);
     const [shouldShow2, setShouldShow2] = useState(true);
-    //const { user } = useAuthentication();
+    const [shouldShow3, setShouldShow3] = useState(true);
+    const [shouldShow4, setShouldShow4] = useState(true);
+
+
     const auth = getAuth(); 
-    const name = ["Dagobert", "Americain"]
+    const [sand, setSand]: any = useState([])
+
+    useEffect(() => {
+      getData()
+    }, [])
+
+    async function getData() {
+      try {
+        const sandwich = await getDocs(collection(fireDB, "Sandwichs"));
+        const sandwichsArray: any[]= [];
+        sandwich.forEach((doc) => {
+          const obj = {
+            id: doc.id,
+            ...doc.data(),
+          };
+    
+          sandwichsArray.push(obj);
+        });
+        
+        
+    
+        setSand(sandwichsArray)
+        console.log(sand);
+      } catch (error) {
+        Alert.alert;
+      }
+    }
+    
+
+    const nomDuSand: any[] = sand.map((bonjour: any) => {
+      return <Text style={styles.nomSand}>{bonjour.Nom}</Text>
+    })
+    const prixDuSand: any[] = sand.map((bonjour: any) => {
+      return  <Text style={styles.TextIngredients}>{bonjour.Prix}</Text>
+    })
+    
+    const descDuSand: any[] = sand.map((bonjour: any) => {
+      return <Text style={styles.TextIngredients}>{bonjour.Description}</Text>
+      
+    })
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -34,31 +90,55 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) =>  {
           <View style={styles.container2}>
             <Text style={styles.nomSand} onPress={() => setShouldShow(!shouldShow)}>
               
-              {name[0]} 
-              
+              {nomDuSand[0]} 
+              <Button title="Add"></Button>            
             </Text>
-
-            {count}
 
             {shouldShow ? (
             <Text style={styles.TextIngredients}>
-                subscriberd
+                  Description: {descDuSand[0]}{"\n"}{"\n"} Prix: {prixDuSand[0]}€  
             </Text>
             ) : null}
             <Text style={styles.nomSand} onPress={() => setShouldShow2(!shouldShow2)}>
-                {name[1]}
+            {nomDuSand[1]} 
 
             </Text>
             {shouldShow2 ? (
             <Text style={styles.TextIngredients}>
-                Ingredients : 1/2 baguette blanche, fromage, jambon, mayonnaise, salade, tomate, maïs.
+              Description: {descDuSand[1]}{"\n"}{"\n"} Prix: {prixDuSand[1]}€
+            </Text>
+            ) : null}
+            <Text style={styles.nomSand} onPress={() => setShouldShow3(!shouldShow3)}>
+              
+              {nomDuSand[2]} 
+              
+            </Text>
+
+
+            {shouldShow3 ? (
+            <Text style={styles.TextIngredients}>
+                  Description: {descDuSand[2]}{"\n"}{"\n"} Prix: {prixDuSand[2]}€  
+            </Text>
+            ) : null}
+            <Text style={styles.nomSand} onPress={() => setShouldShow4(!shouldShow4)}>
+              
+              {nomDuSand[3]} 
+              
+            </Text>
+
+
+            {shouldShow4 ? (
+            <Text style={styles.TextIngredients}>
+                  Description: {descDuSand[3]}{"\n"}{"\n"} Prix: {prixDuSand[3]}€  
             </Text>
             ) : null}
             
-            
+        
           </View>
           <View style={styles.container4}>
             <Button title="Personnaliser" buttonStyle={styles.buttonPers} onPress={() => navigation.navigate('Personnaliser')} />
+            <Button title="test" type="outline" buttonStyle={styles.button} onPress={() => addData()}  />
+
             <Button title="Logout" type="outline" buttonStyle={styles.button} onPress={() => signOut(auth)}  />
           </View>
           
@@ -138,11 +218,12 @@ const styles = StyleSheet.create({
     TextIngredients: {
         backgroundColor: "#2E2B2B",
         marginLeft: 15,
-        padding: 10,
+        paddingLeft: 10,
         color: "#fff",
         borderBottomLeftRadius: 15,
         borderBottomRightRadius:15,
-        marginBottom: 20,
+        paddingBottom: 10,
+        
         width: "92%"
       },
     nomSand:{
@@ -154,13 +235,10 @@ const styles = StyleSheet.create({
         backgroundColor: "#2E2B2B",
         marginLeft: 15,
         marginTop: 5,
-        width: "92%"
+        width: "92%",
+        paddingRight: 50
     },
-    add:{
-      textAlign: "right",
-      alignItems: "flex-end",
-      flexDirection: "column"
-    },
+
 
 });
 
