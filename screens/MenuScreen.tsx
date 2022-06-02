@@ -9,11 +9,16 @@ import {
   } from 'react-native';
   import { Button } from 'react-native-elements';
   import { getAuth, signOut } from 'firebase/auth';
-import { count } from "../utils/hooks/counter";
 import { StackScreenProps } from '@react-navigation/stack';
 
 import { collection, addDoc, getDocs, DocumentData, SnapshotOptions, SnapshotMetadata } from "firebase/firestore"; 
 import fireDB from "../config/firebase";
+
+import store from "../redux/store"
+import {useDispatch} from "react-redux"
+import {addCart, deleteFromCart} from "../redux/cartReducer"
+
+
 
 async function addData(){
   try{
@@ -31,15 +36,75 @@ async function addData(){
 
 
 
+
+
 const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) =>  {
     const [shouldShow, setShouldShow] = useState(true);
     const [shouldShow2, setShouldShow2] = useState(true);
     const [shouldShow3, setShouldShow3] = useState(true);
     const [shouldShow4, setShouldShow4] = useState(true);
+    const [panier, setPanier] = useState(0);
+    const [dago, setDago] = useState(0)
+    const [americain, setAmericain] = useState(0)
+    const [dejeuner, setDejeuner] = useState(0)
+    const [raclette, setRaclette] = useState(0)
+
 
 
     const auth = getAuth(); 
     const [sand, setSand]: any = useState([])
+
+    const cartItems = store.getState()
+    const dispatch = useDispatch() 
+
+    function combinedAddD(nm: number){
+      dispatch(addCart(nomDuSand[nm]))
+      setDago(dago+1)
+      setPanier(panier+1)
+    }
+
+    function combinedAddA(nm: number){
+      dispatch(addCart(nomDuSand[nm]))
+      setAmericain(americain+1)
+      setPanier(panier+1)
+    }
+
+    function combinedAddDe(nm: number){
+      dispatch(addCart(nomDuSand[nm]))
+      setDejeuner(dejeuner+1)
+      setPanier(panier+1)
+    }
+
+    function combinedAddR(nm: number){
+      dispatch(addCart(nomDuSand[nm]))
+      setRaclette(raclette+1)
+      setPanier(panier+1)
+    }
+
+    function combinedRemoveD(nm: number){
+      dispatch(deleteFromCart(nomDuSand[nm]))
+      setPanier(panier-dago)
+      setDago(dago-dago)
+    }
+
+    function combinedRemoveA(nm: number){
+      dispatch(deleteFromCart(nomDuSand[nm]))
+      setPanier(panier-americain)
+      setAmericain(americain-americain)
+    }
+
+    function combinedRemoveDe(nm: number){
+      dispatch(deleteFromCart(nomDuSand[nm]))
+      setPanier(panier-dejeuner)
+      setDejeuner(dejeuner-dejeuner)
+    }
+
+    function combinedRemoveR(nm: number){
+      dispatch(deleteFromCart(nomDuSand[nm]))
+      setPanier(panier-raclette)
+      setRaclette(raclette-raclette)
+    }
+    
 
     useEffect(() => {
       getData()
@@ -68,17 +133,22 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) =>  {
     }
     
 
-    const nomDuSand: any[] = sand.map((bonjour: any) => {
-      return <Text style={styles.nomSand}>{bonjour.Nom}</Text>
-    })
-    const prixDuSand: any[] = sand.map((bonjour: any) => {
-      return  <Text style={styles.TextIngredients}>{bonjour.Prix}</Text>
-    })
-    
-    const descDuSand: any[] = sand.map((bonjour: any) => {
-      return <Text style={styles.TextIngredients}>{bonjour.Description}</Text>
+    const nomDuSand: any[] = sand.map((element: any) => {
+      return <Text style={styles.nomSand}>{element.Nom}</Text>
       
     })
+    const prixDuSand: any[] = sand.map((element: any) => {
+      return <> 
+      <Text style={styles.TextIngredients}>{element.Prix} €</Text> 
+              </>
+
+    })
+    
+    const descDuSand: any[] = sand.map((element: any) => {
+      return <Text style={styles.TextIngredients}>{element.Description}</Text>
+      
+    })
+
 
 
   return (
@@ -90,46 +160,57 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) =>  {
           <View style={styles.container2}>
             <Text style={styles.nomSand} onPress={() => setShouldShow(!shouldShow)}>
               
-              {nomDuSand[0]} 
-              <Button title="Add"></Button>            
+              {nomDuSand[0]} ({dago}) 
+              <Button title="Add" onPress={() => combinedAddD(0)}></Button>
+              <Button title="Remove" onPress={() => combinedRemoveD(0)}></Button>            
             </Text>
 
             {shouldShow ? (
             <Text style={styles.TextIngredients}>
-                  Description: {descDuSand[0]}{"\n"}{"\n"} Prix: {prixDuSand[0]}€  
+                  Description: {descDuSand[0]}{"\n"}{"\n"} Prix: {prixDuSand[0]}  
             </Text>
             ) : null}
             <Text style={styles.nomSand} onPress={() => setShouldShow2(!shouldShow2)}>
-            {nomDuSand[1]} 
+            {nomDuSand[1]} ({americain}) 
+            <Button title="Add" onPress={() =>combinedAddA(1)}></Button>
+            <Button title="Remove" onPress={() => combinedRemoveA(1)}></Button>          
+
 
             </Text>
             {shouldShow2 ? (
             <Text style={styles.TextIngredients}>
-              Description: {descDuSand[1]}{"\n"}{"\n"} Prix: {prixDuSand[1]}€
+              Description: {descDuSand[1]}{"\n"}{"\n"} Prix: {prixDuSand[1]} 
             </Text>
             ) : null}
             <Text style={styles.nomSand} onPress={() => setShouldShow3(!shouldShow3)}>
               
-              {nomDuSand[2]} 
+              {nomDuSand[2]} ({dejeuner}) 
+              <Button title="Add" onPress={() =>combinedAddDe(2)}></Button>
+              <Button title="Remove" onPress={() => combinedRemoveDe(2)}></Button>            
+
               
             </Text>
 
 
             {shouldShow3 ? (
             <Text style={styles.TextIngredients}>
-                  Description: {descDuSand[2]}{"\n"}{"\n"} Prix: {prixDuSand[2]}€  
+                  Description: {descDuSand[2]}{"\n"}{"\n"} Prix: {prixDuSand[2]}  
             </Text>
             ) : null}
             <Text style={styles.nomSand} onPress={() => setShouldShow4(!shouldShow4)}>
               
-              {nomDuSand[3]} 
+              {nomDuSand[3]} ({raclette}) 
+              <Button title="Add" onPress={() => combinedAddR(3)}></Button> 
+              <Button title="Remove" onPress={() => combinedRemoveR(3)}></Button>            
+          
+
               
             </Text>
 
 
             {shouldShow4 ? (
             <Text style={styles.TextIngredients}>
-                  Description: {descDuSand[3]}{"\n"}{"\n"} Prix: {prixDuSand[3]}€  
+                  Description: {descDuSand[3]}{"\n"}{"\n"} Prix: {prixDuSand[3]} 
             </Text>
             ) : null}
             
@@ -137,14 +218,12 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) =>  {
           </View>
           <View style={styles.container4}>
             <Button title="Personnaliser" buttonStyle={styles.buttonPers} onPress={() => navigation.navigate('Personnaliser')} />
-            <Button title="test" type="outline" buttonStyle={styles.button} onPress={() => addData()}  />
-
             <Button title="Logout" type="outline" buttonStyle={styles.button} onPress={() => signOut(auth)}  />
           </View>
-          
+           
         </ScrollView>
-        <View style={styles.container3}>
-            <Button style={styles.footer} title="Panier" />
+        <View style={styles.container3} >
+          <Text style={styles.textPanier} onPress={() => navigation.navigate('Panier') }>Panier ({panier})</Text>
           </View>
     </SafeAreaView>
   );
@@ -238,6 +317,16 @@ const styles = StyleSheet.create({
         width: "92%",
         paddingRight: 50
     },
+    textPanier: {
+      color:"#fff",
+        fontSize: 20,
+        padding: 10,
+        backgroundColor: "#2E2B2B",
+        width: "100%",
+      },
+    addPrix:{
+      color: "#2E2B2B"
+    }
 
 
 });
