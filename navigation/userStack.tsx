@@ -1,10 +1,10 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import MenuScreen from '../screens/MenuScreen';
-import PersonnaliserScreen from '../screens/PersonnaliserScreen';
-import PanierScreen from '../screens/PanierScreen'
+import MenuScreen from "../screens/MenuScreen";
+import PersonnaliserScreen from "../screens/PersonnaliserScreen";
+import PanierScreen from "../screens/PanierScreen";
 
 const Stack = createStackNavigator();
 

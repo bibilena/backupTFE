@@ -1,7 +1,7 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { Button } from 'react-native-elements';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { StackScreenProps } from "@react-navigation/stack";
+import { Button } from "react-native-elements";
 
 const WelcomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   return (
@@ -9,12 +9,21 @@ const WelcomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
       <Text style={styles.titre}>Welcome!</Text>
 
       <View style={styles.buttons}>
-        <Button title="Sign in" buttonStyle={styles.button} onPress={() => navigation.navigate('Sign In')} />
-        <Button title="Sign up" type="outline" buttonStyle={styles.button} onPress={() => navigation.navigate('Sign Up')} />
+        <Button
+          title="Sign in"
+          buttonStyle={styles.button}
+          onPress={() => navigation.navigate("Sign In")}
+        />
+        <Button
+          title="Sign up"
+          type="outline"
+          buttonStyle={styles.button}
+          onPress={() => navigation.navigate("Sign Up")}
+        />
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -22,7 +31,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#444956",
     alignItems: "center",
   },
-  
+
   titre: {
     fontWeight: "bold",
     fontSize: 40,
@@ -31,7 +40,7 @@ const styles = StyleSheet.create({
   },
 
   buttons: {
-    marginLeft: 50
+    marginLeft: 50,
   },
 
   button: {
@@ -41,8 +50,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
     backgroundColor: "#2E2B2B",
-    paddingHorizontal: 25
-  }
+    paddingHorizontal: 25,
+  },
 });
 
 export default WelcomeScreen;

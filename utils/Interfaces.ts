@@ -1,8 +1,8 @@
 export interface Product {
-    name: String
-    price: string
+  name: String;
+  price: string;
 }
 
-export interface Cart extends Product{
-    count: number
+export interface Cart extends Product {
+  count: number;
 }
