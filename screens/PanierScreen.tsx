@@ -3,10 +3,14 @@ import { StyleSheet, Text, View, ScrollView, SafeAreaView } from "react-native";
 import { useSelector } from "react-redux";
 import { getCart } from "../redux/store";
 import { Button } from "react-native-elements";
+import { getDatabase, ref, set } from "firebase/database"
+import { getAuth } from "firebase/auth";
 
 const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const allCart = useSelector(getCart);
   console.log("all cart ", allCart);
+  const auth = getAuth()
+  const user = auth.currentUser
 
   function retourner() {
     return (
@@ -14,13 +18,34 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         {allCart.map((element: any) => (
           <>
             <Text style={styles.nomSand}>
-              {element.nomSand.props.children} {element.prixSand.props.children}
+              {element.nomSand} {element.prixSand}
             </Text>
             <Text>{"\n"}</Text>
           </>
         ))}
       </>
     );
+  }
+
+  function sendOrder(){
+      const user = auth.currentUser
+      if(user){
+      const db = getDatabase()
+      {allCart.map((element: any) =>(
+        set(ref(db, "orders/" + user.uid), {
+            Nom: element.nomSand,
+            Prix: element.prixSand
+        })
+        
+      ))}}
+  }
+
+  function test(){
+      if(user){
+          console.log(user.uid);
+          
+      }
+      
   }
 
   return (
@@ -31,6 +56,11 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         </View>
         <View>{retourner()}</View>
         <View style={styles.container4}>
+        <Button
+            title="  Commander  "
+            buttonStyle={styles.buttonPers}
+            onPress={() => sendOrder()}
+          />
           <Button
             title="  Commander  "
             buttonStyle={styles.buttonPers}

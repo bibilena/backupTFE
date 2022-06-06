@@ -2,6 +2,8 @@ const initialState: any = [];
 
 const ADD_TO_CART = "ADD_TO_CART";
 const DELETE_FROM_CART = "DELETE_FROM_CART";
+const DELETE_ALL_FROM_CART = "DELETE_ALL_FROM_CART";
+
 
 export function addCart(nomSand: string, prixSand: number) {
   return {
@@ -20,6 +22,11 @@ export function deleteFromCart(nomSand: any) {
     },
   };
 }
+export function deleteAllFromCart() {
+    return {
+      type: DELETE_ALL_FROM_CART,
+    };
+  }
 
 const cartReducer = (state = initialState, action: any) => {
   switch (action.type) {
@@ -35,8 +42,10 @@ const cartReducer = (state = initialState, action: any) => {
     case DELETE_FROM_CART:
       return state.filter(
         (cart: any) =>
-          cart.nomSand.props.children !== action.payload.nomSand.props.children
+          cart.nomSand !== action.payload.nomSand
       );
+      case DELETE_ALL_FROM_CART:
+        return [state = initialState]
     //
     default:
       return state;
