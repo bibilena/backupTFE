@@ -6,7 +6,7 @@ import {
   ScrollView,
   SafeAreaView,
   Alert,
-  RefreshControl
+  RefreshControl,
 } from "react-native";
 import { Button } from "react-native-elements";
 import { getAuth, signOut } from "firebase/auth";
@@ -22,47 +22,34 @@ import {
 } from "firebase/firestore";
 import fireDB from "../config/firebase";
 
-import store from "../redux/store";
-import { useDispatch } from "react-redux";
-import { addCart, deleteFromCart, deleteAllFromCart } from "../redux/cartReducer";
-
-async function addData() {
-  try {
-    await addDoc(collection(fireDB, "Sandwichs"), {
-      Nom: "Raclette",
-      Prix: 3.5,
-      Description: "Jambon serrano, formage à raclette, pommes de terre ",
-    });
-  } catch (error) {
-    Alert.alert("erreur", "une erreur a été rencontrée");
-  }
-}
+import store, { getCountPanier } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addCart,
+  deleteFromCart,
+  deleteAllFromCart,
+} from "../redux/cartReducer";
+import { countPlus, countMoins, initCount} from "../redux/CountPanierReducer"
 
 const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const [panier, setPanier] = useState(0);
-  const [dago, setDago] = useState(0);
-  const [americain, setAmericain] = useState(0);
-  const [dejeuner, setDejeuner] = useState(0);
-  const [raclette, setRaclette] = useState(0);
-
   const auth = getAuth();
   const [sand, setSand]: any = useState([]);
-
-  const cartItems = store.getState();
   const dispatch = useDispatch();
+  const countPanier = useSelector(getCountPanier);
 
 
-  /*function signOutCartEmpty(){
-    dispatch(deleteAllFromCart())
-    signOut(auth)
-  }*/
+  function signOutCartEmpty() {
+    dispatch(deleteAllFromCart());
+    signOut(auth);
+  }
   function addPanier(nom: string, prix: number) {
     dispatch(addCart(nom, prix));
-    setPanier(panier + 1);
+    dispatch(countPlus());
   }
   function removePanier(nom: string) {
     dispatch(deleteFromCart(nom));
-    if (panier > 0) setPanier(panier - 1);
+    dispatch(countMoins())
   }
 
   useEffect(() => {
@@ -74,11 +61,18 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   function adminButton(user: any) {
     if (user.uid === "Geq4ULiVB7cwdteWJXquaPpLAog1") {
       return (
-        <Button
-          title="Ajouter Sandwich"
-          buttonStyle={styles.addSand}
-          onPress={() => navigation.navigate("Ajout")}
-        />
+        <>
+          <Button
+            title="Ajouter Sandwich"
+            buttonStyle={styles.addSand}
+            onPress={() => navigation.navigate("Ajout")}
+          />
+          <Button
+            title={"Commande en cours "}
+            buttonStyle={styles.orders}
+            onPress={() => navigation.navigate("Orders")}
+          />
+        </>
       );
     }
   }
@@ -107,6 +101,7 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     return (
       <>
         {sand.map((element: any) => (
+          
           <View style={styles.container2}>
             <Text style={styles.nomSand}>
               {element.Nom}
@@ -150,7 +145,7 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             title="Logout"
             type="outline"
             buttonStyle={styles.button}
-            onPress={() => signOut(auth)}
+            onPress={() => signOutCartEmpty()}
           />
         </View>
       </ScrollView>
@@ -159,7 +154,7 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           style={styles.textPanier}
           onPress={() => navigation.navigate("Panier")}
         >
-          Panier ({panier})
+          Panier ({countPanier})
         </Text>
       </View>
     </SafeAreaView>
@@ -264,6 +259,15 @@ const styles = StyleSheet.create({
   },
   addSand: {
     width: "150%",
+    borderRadius: 25,
+    height: 50,
+    marginTop: 20,
+    marginBottom: 10,
+    backgroundColor: "#2E2B2B",
+    paddingHorizontal: 50,
+  },
+  orders: {
+    width: "175%",
     borderRadius: 25,
     height: 50,
     marginTop: 20,

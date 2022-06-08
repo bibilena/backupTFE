@@ -5,5 +5,8 @@ const store = createStore(rootReducer);
 export function getCart(store: any) {
   return store.cartReducer;
 }
+export function getCountPanier(store: any){
+    return store.CountPanierReducer;
+}
 
 export default store;

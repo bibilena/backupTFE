@@ -1,24 +1,47 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { StyleSheet, Text, View, ScrollView, SafeAreaView } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getCart } from "../redux/store";
 import { Button } from "react-native-elements";
-import { getDatabase, ref, set } from "firebase/database"
+import { getDatabase, ref, set } from "firebase/database";
 import { getAuth } from "firebase/auth";
+import  rootReducer from "../redux/rootReducer"
+import { deleteAllFromCart } from "../redux/cartReducer";
+import { initCount } from "../redux/CountPanierReducer";
 
 const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
+  const dispatch = useDispatch();
   const allCart = useSelector(getCart);
-  console.log("all cart ", allCart);
-  const auth = getAuth()
-  const user = auth.currentUser
+  const auth = getAuth();
+  var hours = new Date().getHours()
+  var minutes = new Date().getMinutes()
+  var sec = new Date().getSeconds()
+  var mili = new Date().getMilliseconds()
+  const testing =  JSON.stringify(allCart[0])
+
+  var hoursMinutes = ((2+hours)*10000000+minutes*100000+sec*1000+mili)*-1
+
+  var total: number = 0
 
   function retourner() {
+
+    if(testing === "[]" || testing === undefined){
+      allCart.splice(0,1)
+      return(
+        <Text style={styles.vide}>Le panier est vide
+      </Text>
+      )
+    }
+      
+    else if(allCart != []){
     return (
+      
       <>
         {allCart.map((element: any) => (
           <>
             <Text style={styles.nomSand}>
-              {element.nomSand} {element.prixSand}
+              {element.nomSand} {element.prixSand}€
+              <Text style={styles.invisible}>{total = total + parseFloat(element.prixSand)}</Text>
             </Text>
             <Text>{"\n"}</Text>
           </>
@@ -26,26 +49,38 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
       </>
     );
   }
-
-  function sendOrder(){
-      const user = auth.currentUser
-      if(user){
-      const db = getDatabase()
-      {allCart.map((element: any) =>(
-        set(ref(db, "orders/" + user.uid), {
-            Nom: element.nomSand,
-            Prix: element.prixSand
-        })
+    else{
+      return(
         
-      ))}}
+        <Text style={styles.vide}>Le panier est vide
+      </Text>
+      
+      )
+    }
+  }
+  function back(){
+    navigation.navigate("Menu")
   }
 
-  function test(){
-      if(user){
-          console.log(user.uid);
-          
+  function sendOrder() {
+    dispatch(deleteAllFromCart());
+    const user = auth.currentUser;
+    if (user) {
+      if (allCart != []) {
+        const db = getDatabase();
+        {
+          allCart.map((element: any) =>
+            set(ref(db, "orders/" + hoursMinutes), {
+              allCart,
+              
+            })
+            
+          );
+        }
+        dispatch(initCount())
+        back()
       }
-      
+    }
   }
 
   return (
@@ -56,15 +91,11 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         </View>
         <View>{retourner()}</View>
         <View style={styles.container4}>
-        <Button
-            title="  Commander  "
-            buttonStyle={styles.buttonPers}
-            onPress={() => sendOrder()}
-          />
+          <Text style={styles.prixTotal}>Prix Total: {total}€</Text>
           <Button
             title="  Commander  "
             buttonStyle={styles.buttonPers}
-            onPress={() => navigation.navigate("Personnaliser")}
+            onPress={() => sendOrder()}
           />
         </View>
       </ScrollView>
@@ -133,6 +164,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#2E2B2B",
     paddingHorizontal: 40,
   },
+  invisible: {
+    color: "#2E2B2B"
+  },
+  prixTotal: {
+    color: "#fff",
+    fontSize: 25,
+    width: "125%",
+    alignSelf: 'center',
+    marginLeft: 45,
+    paddingTop: 15
+  },
+  vide: {
+    color: "#fff",
+    fontSize: 30,
+    alignSelf: "center"
+  }
 });
 
 export default Panier;

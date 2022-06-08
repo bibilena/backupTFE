@@ -62,9 +62,10 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
       return;
     }
     try {
+      const prix2=parseFloat(prix)
       await setDoc(doc(fireDB, "Sandwichs", nom), {
         Nom: nom,
-        Prix: prix,
+        Prix: prix2,
         Description: description,
       });
     } catch (error) {

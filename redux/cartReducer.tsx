@@ -38,7 +38,6 @@ const cartReducer = (state = initialState, action: any) => {
           prixSand: action.payload.prixSand,
         },
       ];
-    //
     case DELETE_FROM_CART:
       return state.filter(
         (cart: any) =>
@@ -46,7 +45,6 @@ const cartReducer = (state = initialState, action: any) => {
       );
       case DELETE_ALL_FROM_CART:
         return [state = initialState]
-    //
     default:
       return state;
   }

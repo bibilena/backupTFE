@@ -6,6 +6,7 @@ import MenuScreen from "../screens/MenuScreen";
 import PersonnaliserScreen from "../screens/PersonnaliserScreen";
 import PanierScreen from "../screens/PanierScreen";
 import AddSandScreen from "../screens/AddSandScreen"
+import OrdersScreen from "../screens/OrderScreen";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ export default function UserStack() {
         <Stack.Screen name="Personnaliser" component={PersonnaliserScreen} />
         <Stack.Screen name="Panier" component={PanierScreen} />
         <Stack.Screen name="Ajout" component={AddSandScreen} />
+        <Stack.Screen name="Orders" component={OrdersScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
