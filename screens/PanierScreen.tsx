@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { StyleSheet, Text, View, ScrollView, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, SafeAreaView, ToastAndroid } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { getCart } from "../redux/store";
 import { Button } from "react-native-elements";
@@ -8,6 +8,7 @@ import { getAuth } from "firebase/auth";
 import  rootReducer from "../redux/rootReducer"
 import { deleteAllFromCart } from "../redux/cartReducer";
 import { initCount } from "../redux/CountPanierReducer";
+import Toast from "react-native-toast-message";
 
 const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -18,6 +19,8 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   var sec = new Date().getSeconds()
   var mili = new Date().getMilliseconds()
   const testing =  JSON.stringify(allCart[0])
+
+  
 
   var hoursMinutes = ((2+hours)*10000000+minutes*100000+sec*1000+mili)*-1
 
@@ -62,6 +65,10 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     navigation.navigate("Menu")
   }
 
+  const showToast = () => {
+    ToastAndroid.show("Commande validée!", ToastAndroid.SHORT);
+  };
+
   function sendOrder() {
     dispatch(deleteAllFromCart());
     const user = auth.currentUser;
@@ -78,6 +85,7 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           );
         }
         dispatch(initCount())
+        showToast()
         back()
       }
     }

@@ -61,7 +61,8 @@ const OrdersScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             })}
             
             <Text style={styles.ecriture}>{"\n"}Total de la commande: {total}€</Text>
-            <Text style={styles.invisible}>{total = 0}</Text>
+            <Text style={styles.invisible}> {total = 0}</Text>
+            
           </View>
         ))}
       </View>

@@ -6,23 +6,26 @@ import {
   ScrollView,
   SafeAreaView,
   Alert,
-  RefreshControl,
 } from "react-native";
 import { Button } from "react-native-elements";
 import { getAuth, signOut } from "firebase/auth";
 import { StackScreenProps } from "@react-navigation/stack";
 
+import { getAnalytics, logEvent } from "firebase/analytics";
+import firebase from "firebase/app"
+import * as Analytics from "expo-firebase-analytics"
+
+import AsyncStorage from "@react-native-async-storage/async-storage"
+
+
 import {
   collection,
-  addDoc,
   getDocs,
-  DocumentData,
-  SnapshotOptions,
-  SnapshotMetadata,
+
 } from "firebase/firestore";
 import fireDB from "../config/firebase";
 
-import store, { getCountPanier } from "../redux/store";
+import { getCountPanier } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addCart,
@@ -32,7 +35,6 @@ import {
 import { countPlus, countMoins, initCount} from "../redux/CountPanierReducer"
 
 const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
-  const [panier, setPanier] = useState(0);
   const auth = getAuth();
   const [sand, setSand]: any = useState([]);
   const dispatch = useDispatch();
@@ -61,7 +63,7 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   function adminButton(user: any) {
     if (user.uid === "Geq4ULiVB7cwdteWJXquaPpLAog1") {
       return (
-        <>
+        <View>
           <Button
             title="Ajouter Sandwich"
             buttonStyle={styles.addSand}
@@ -72,7 +74,7 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             buttonStyle={styles.orders}
             onPress={() => navigation.navigate("Orders")}
           />
-        </>
+        </View>
       );
     }
   }
@@ -97,20 +99,29 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     }
   }
 
+ async function testing(){
+   await Analytics.logEvent("connect", {
+      connet: true
+    })
+  }
+
   function addingSandwich() {
+    let counct = 0
     return (
       <>
         {sand.map((element: any) => (
-          
-          <View style={styles.container2}>
+          <View style={styles.container2} key={counct}>
             <Text style={styles.nomSand}>
-              {element.Nom}
+              {element.Nom}<Text style={styles.invisible}>{counct = counct + 1}</Text>
+
+
               <Button
-                title="Add"
+                title="Ajouter"
                 onPress={() => addPanier(element.Nom, element.Prix)}
               />
+              <Text>   </Text>
               <Button
-                title="Remove"
+                title="Supprimer"
                 onPress={() => removePanier(element.Nom)}
               />
             </Text>
@@ -147,6 +158,7 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             buttonStyle={styles.button}
             onPress={() => signOutCartEmpty()}
           />
+           
         </View>
       </ScrollView>
       <View style={styles.container3}>
@@ -179,9 +191,11 @@ const styles = StyleSheet.create({
   },
 
   container4: {
-    paddingHorizontal: 120,
-    alignItems: "center",
+    flex:3,
+    paddingVertical: "50%",
+    //alignItems: "center",
     justifyContent: "center",
+    //alignItems: "flex-start",
   },
 
   footer: {
@@ -205,23 +219,20 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    width: "80%",
+    width: "60%",
+    marginHorizontal: "20%",
     borderRadius: 25,
-    height: 50,
-    marginTop: 20,
-    marginBottom: 10,
+    height: "55%",
     backgroundColor: "#2E2B2B",
-    paddingHorizontal: 32,
   },
 
   buttonPers: {
-    width: "125%",
+    width: "60%",
+    marginHorizontal: "20%",
     borderRadius: 25,
-    height: 50,
-    marginTop: 20,
-    marginBottom: 10,
+    height: "55%",
+
     backgroundColor: "#2E2B2B",
-    paddingHorizontal: 40,
   },
 
   TextIngredients: {
@@ -258,23 +269,31 @@ const styles = StyleSheet.create({
     color: "#2E2B2B",
   },
   addSand: {
-    width: "150%",
+    width: "60%",
+    marginHorizontal: "20%",
     borderRadius: 25,
-    height: 50,
-    marginTop: 20,
-    marginBottom: 10,
+    height: "55%",
+
     backgroundColor: "#2E2B2B",
-    paddingHorizontal: 50,
   },
   orders: {
-    width: "175%",
+    width: "60%",
+    marginHorizontal: "20%",
     borderRadius: 25,
-    height: 50,
-    marginTop: 20,
-    marginBottom: 10,
+    height: "55%",
     backgroundColor: "#2E2B2B",
-    paddingHorizontal: 50,
   },
+  invisible: {
+  color: "#2E2B2B",
+  backgroundColor: "#2E2B2B",
+
+}
 });
 
 export default Menu;
+
+/*invisible: {
+  color: "#2E2B2B",
+  backgroundColor: "#2E2B2B",
+
+}*/

@@ -27,7 +27,19 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "config": {
+        "firebase": {
+          "apiKey": "AIzaSyB_3mS4EYXQb9i5v_QlXStFd9_GmaNLqpE",
+          "authDomain": "sandwicherie-tfe.firebaseapp.com",
+          "databaseURL": "https://sandwicherie-tfe-default-rtdb.europe-west1.firebasedatabase.app",
+          "projectId": "sandwicherie-tfe",
+          "storageBucket": "sandwicherie-tfe.appspot.com",
+          "messagingSenderId": "164120897087",
+          "appId": "1:164120897087:web:4c3ef6c20c9c757a287a8a",
+          "measurementId": "G-J82J7ZTRFJ"
+        }
+      }
     }
   }
 }
