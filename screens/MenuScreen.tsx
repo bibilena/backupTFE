@@ -108,11 +108,11 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   function addingSandwich() {
     let counct = 0
     return (
-      <>
+      <View key={Math.random()}>
         {sand.map((element: any) => (
-          <View style={styles.container2} key={counct}>
+          <View style={styles.container2} >
             <Text style={styles.nomSand}>
-              {element.Nom}<Text style={styles.invisible}>{counct = counct + 1}</Text>
+              {element.Nom}<Text style={styles.invisible}> </Text>
 
 
               <Button
@@ -133,7 +133,7 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             <Text>{"\n"}</Text>
           </View>
         ))}
-      </>
+      </View>
     );
   }
 

@@ -37,17 +37,19 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     }
       
     else if(allCart != []){
+      var count: number
+
     return (
       
       <>
         {allCart.map((element: any) => (
-          <>
+          <View key={Math.random()}>
             <Text style={styles.nomSand}>
               {element.nomSand} {element.prixSand}€
               <Text style={styles.invisible}>{total = total + parseFloat(element.prixSand)}</Text>
             </Text>
             <Text>{"\n"}</Text>
-          </>
+          </View>
         ))}
       </>
     );
