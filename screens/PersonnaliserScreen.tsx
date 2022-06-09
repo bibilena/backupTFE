@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     marginTop: 15,
     marginBottom: 50,
-    color: "#fff",
+    color: "#f47069",
     alignItems: "center",
   },
 

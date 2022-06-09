@@ -34,7 +34,7 @@ const SignInScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titre}>Sign in!</Text>
+      <Text style={styles.titre}>Se connecter</Text>
 
       {!!value.error && (
         <View style={styles.error}>
@@ -55,7 +55,7 @@ const SignInScreen = () => {
         <View style={styles.images}>
           <Image source={require("../assets/lock.png")} style={styles.image} />
           <TextInput
-            placeholder="Password"
+            placeholder="Mot de passe"
             style={styles.control}
             value={value.password}
             onChangeText={(text) => setValue({ ...value, password: text })}
@@ -63,7 +63,7 @@ const SignInScreen = () => {
           />
         </View>
 
-        <Button title="Sign in" buttonStyle={styles.button} onPress={signIn} />
+        <Button title="Se connecter" buttonStyle={styles.button} onPress={signIn} />
       </View>
     </View>
   );
@@ -72,7 +72,7 @@ const SignInScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#444956",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 40,
     marginBottom: 50,
-    color: "#fff",
+    color: "#f47069",
   },
 
   controls: {
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     height: 50,
     marginBottom: 25,
-    color: "#fff",
+    color: "#000",
   },
 
   images: {
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     height: 50,
     marginTop: 20,
     marginBottom: 10,
-    backgroundColor: "#2E2B2B",
+    backgroundColor: "#3a8f61",
     paddingHorizontal: 25,
   },
 

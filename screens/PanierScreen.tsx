@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { StyleSheet, Text, View, ScrollView, SafeAreaView, ToastAndroid } from "react-native";
+import { StyleSheet, Text, View, ScrollView, SafeAreaView, ToastAndroid, Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { getCart } from "../redux/store";
 import { Button } from "react-native-elements";
@@ -87,7 +87,8 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           );
         }
         dispatch(initCount())
-        showToast()
+        if(Platform.OS === "android"){
+        showToast()}
         back()
       }
     }
@@ -115,16 +116,16 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#444956",
+    backgroundColor: "#fff",
     width: "100%",
   },
   container2: {
     flex: 1,
-    backgroundColor: "#444956",
+    backgroundColor: "#fff",
     alignItems: "flex-start",
   },
   container3: {
-    backgroundColor: "#2E2B2B",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     marginTop: 15,
     marginBottom: 50,
-    color: "#fff",
+    color: "#f47069",
     alignItems: "center",
   },
   containertitre: {
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     fontSize: 20,
     padding: 10,
-    backgroundColor: "#2E2B2B",
+    backgroundColor: "#3a8f61",
     marginLeft: 15,
     marginTop: 5,
     width: "92%",
@@ -171,14 +172,14 @@ const styles = StyleSheet.create({
     height: 50,
     marginTop: 20,
     marginBottom: 10,
-    backgroundColor: "#2E2B2B",
+    backgroundColor: "#3a8f61",
     paddingHorizontal: 40,
   },
   invisible: {
-    color: "#2E2B2B"
+    color: "#3a8f61"
   },
   prixTotal: {
-    color: "#fff",
+    color: "#f47069",
     fontSize: 25,
     width: "125%",
     alignSelf: 'center',
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
     paddingTop: 15
   },
   vide: {
-    color: "#fff",
+    color: "#f47069",
     fontSize: 30,
     alignSelf: "center"
   }

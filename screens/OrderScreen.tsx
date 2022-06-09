@@ -44,6 +44,7 @@ const OrdersScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         table.push(childData);
       });
     });
+    
 
     return (
       <View>
@@ -51,12 +52,12 @@ const OrdersScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           <View style={styles.nomSand}>
             {element.map((element2: any) => {
               return (
-                <>
+                <View key={Math.random()}>
                   <Text style={styles.ecriture}>
                     {element2.nomSand}: {element2.prixSand}€
                     <Text style={styles.invisible}>l{total = total + element2.prixSand}</Text>
                   </Text>
-                </>
+                </View>
               );
             })}
             
@@ -89,18 +90,18 @@ const OrdersScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#444956",
+    backgroundColor: "#fff",
     width: "100%",
   },
   container2: {
     flex: 1,
-    backgroundColor: "#444956",
+    backgroundColor: "#fff",
     alignItems: "flex-start",
   },
   nomSand: {
     borderRadius: 15,
     padding: 10,
-    backgroundColor: "#2E2B2B",
+    backgroundColor: "#3a8f61",
     marginLeft: 15,
     marginTop: 5,
     paddingRight: 50,
@@ -112,9 +113,10 @@ const styles = StyleSheet.create({
   valider: {
     marginHorizontal: 30,
     marginVertical: 15,
+    backgroundColor: "#f47069"
   },
   invisible: {
-      color: "#2E2B2B"
+      color: "#3a8f61"
   },
 });
 export default OrdersScreen;

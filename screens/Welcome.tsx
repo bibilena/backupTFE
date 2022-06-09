@@ -1,42 +1,57 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Button } from "react-native-elements";
 
 const WelcomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.titre}>Welcome!</Text>
-
-      <View style={styles.buttons}>
-        <Button
-          title="Sign in"
-          buttonStyle={styles.button}
-          onPress={() => navigation.navigate("Sign In")}
-        />
-        <Button
-          title="Sign up"
-          type="outline"
-          buttonStyle={styles.button}
-          onPress={() => navigation.navigate("Sign Up")}
-        />
-      </View>
-    </View>
+    <SafeAreaView style={styles.containerSc}>
+      <ScrollView style={styles.containerSc}>
+        <View style={styles.container}>
+          <Text style={styles.titre}>Bienvenue!</Text>
+          <View><Image source={require("../assets/logo.png")} style={styles.image} /></View>
+          <View style={styles.buttons}>
+            <Button
+              title="se connecter"
+              buttonStyle={styles.button}
+              onPress={() => navigation.navigate("Sign In")}
+            />
+            <Button
+              title="créer un compte"
+              buttonStyle={styles.button}
+              onPress={() => navigation.navigate("Sign Up")}
+            />
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#444956",
+    backgroundColor: "#fff",
     alignItems: "center",
+    width: "100%",
   },
-
+  containerSc:{
+    flex: 1,
+    backgroundColor: "#fff",
+    width: "100%",
+  },
   titre: {
     fontWeight: "bold",
     fontSize: 40,
     marginBottom: 50,
-    color: "#fff",
+    color: "#f47069",
   },
 
   buttons: {
@@ -49,8 +64,15 @@ const styles = StyleSheet.create({
     height: 50,
     marginTop: 20,
     marginBottom: 10,
-    backgroundColor: "#2E2B2B",
+    backgroundColor: "#3a8f61",
     paddingHorizontal: 25,
+  },
+  image: {
+    marginTop: 15,
+    marginRight: 5,
+    width: 250,
+    height: 250,
+
   },
 });
 

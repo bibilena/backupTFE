@@ -114,7 +114,6 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         <View style={styles.container4}>
         <Button
             title="Ajouter"
-            type="outline"
             buttonStyle={styles.buttonPers}
             onPress={() => backToMenu()}
           />
@@ -126,7 +125,7 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: "#444956",
+      backgroundColor: "#fff",
       width: "100%",
     },
     container4: {
@@ -139,7 +138,7 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
       fontSize: 40,
       marginTop: 15,
       marginBottom: 50,
-      color: "#fff",
+      color: "#f47069",
       alignItems: "center",
     },
     containertitre: {
@@ -151,7 +150,7 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
       height: 50,
       marginTop: 20,
       marginBottom: 10,
-      backgroundColor: "#2E2B2B",
+      backgroundColor: "#3a8f61",
       paddingHorizontal: 40,
     },
     nomSand: {
@@ -159,7 +158,7 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
       borderRadius: 15,
       fontSize: 20,
       padding: 10,
-      backgroundColor: "#2E2B2B",
+      backgroundColor: "#3a8f61",
       marginLeft: 15,
       marginTop: 5,
       width: "92%",

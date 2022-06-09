@@ -6,26 +6,24 @@ import {
   ScrollView,
   SafeAreaView,
   Alert,
+  RefreshControl,
+  Platform,
 } from "react-native";
 import { Button } from "react-native-elements";
 import { getAuth, signOut } from "firebase/auth";
 import { StackScreenProps } from "@react-navigation/stack";
 
-import { getAnalytics, logEvent } from "firebase/analytics";
-import firebase from "firebase/app"
-import * as Analytics from "expo-firebase-analytics"
-
-import AsyncStorage from "@react-native-async-storage/async-storage"
-
-
 import {
   collection,
+  addDoc,
   getDocs,
-
+  DocumentData,
+  SnapshotOptions,
+  SnapshotMetadata,
 } from "firebase/firestore";
 import fireDB from "../config/firebase";
 
-import { getCountPanier } from "../redux/store";
+import store, { getCountPanier } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addCart,
@@ -35,6 +33,7 @@ import {
 import { countPlus, countMoins, initCount} from "../redux/CountPanierReducer"
 
 const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
+  const [panier, setPanier] = useState(0);
   const auth = getAuth();
   const [sand, setSand]: any = useState([]);
   const dispatch = useDispatch();
@@ -61,9 +60,9 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const userConnected = auth.currentUser;
 
   function adminButton(user: any) {
-    if (user.uid === "Geq4ULiVB7cwdteWJXquaPpLAog1") {
+    if (user.uid === "Geq4ULiVB7cwdteWJXquaPpLAog1" || user.uid ==="I6EADh845jeaMV2Ufmke3T2LtiP2") {
       return (
-        <View>
+        <>
           <Button
             title="Ajouter Sandwich"
             buttonStyle={styles.addSand}
@@ -74,7 +73,7 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             buttonStyle={styles.orders}
             onPress={() => navigation.navigate("Orders")}
           />
-        </View>
+        </>
       );
     }
   }
@@ -99,28 +98,21 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     }
   }
 
- async function testing(){
-   await Analytics.logEvent("connect", {
-      connet: true
-    })
-  }
-
   function addingSandwich() {
-    let counct = 0
     return (
       <View key={Math.random()}>
         {sand.map((element: any) => (
-          <View style={styles.container2} >
+          
+          <View style={styles.container2}>
             <Text style={styles.nomSand}>
-              {element.Nom}<Text style={styles.invisible}> </Text>
-
-
+              {element.Nom}<Text> </Text>
               <Button
                 title="Ajouter"
                 onPress={() => addPanier(element.Nom, element.Prix)}
-              />
-              <Text>   </Text>
+                buttonStyle={styles.addSupp}
+              /><Text>  </Text>
               <Button
+              buttonStyle={styles.addSupp}
                 title="Supprimer"
                 onPress={() => removePanier(element.Nom)}
               />
@@ -154,11 +146,9 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           {adminButton(userConnected)}
           <Button
             title="Logout"
-            type="outline"
             buttonStyle={styles.button}
             onPress={() => signOutCartEmpty()}
           />
-           
         </View>
       </ScrollView>
       <View style={styles.container3}>
@@ -176,16 +166,16 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#444956",
+    backgroundColor: "#fff",
     width: "100%",
   },
   container2: {
     flex: 1,
-    backgroundColor: "#444956",
+    backgroundColor: "#fff",
     alignItems: "flex-start",
   },
   container3: {
-    backgroundColor: "#2E2B2B",
+    backgroundColor: "#3a8f61",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -200,10 +190,10 @@ const styles = StyleSheet.create({
 
   footer: {
     fontWeight: "bold",
-    backgroundColor: "#2E2B2B",
+    backgroundColor: "#3a8f61",
     fontSize: 25,
     marginVertical: 15,
-    color: "#fff",
+    color: "#f47069",
   },
 
   titre: {
@@ -211,7 +201,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     marginTop: 15,
     marginBottom: 50,
-    color: "#fff",
+    color: "#f47069",
     alignItems: "center",
   },
   containertitre: {
@@ -222,21 +212,22 @@ const styles = StyleSheet.create({
     width: "60%",
     marginHorizontal: "20%",
     borderRadius: 25,
-    height: "55%",
-    backgroundColor: "#2E2B2B",
+    height: "65%",
+    backgroundColor: "#f47069",
   },
 
   buttonPers: {
     width: "60%",
     marginHorizontal: "20%",
     borderRadius: 25,
-    height: "55%",
-
-    backgroundColor: "#2E2B2B",
+    height: "65%",
+    marginTop: "0%",
+    marginBottom: "0%",
+    backgroundColor: "#3a8f61",
   },
 
   TextIngredients: {
-    backgroundColor: "#2E2B2B",
+    backgroundColor: "#3a8f61",
     marginLeft: 15,
     paddingLeft: 10,
     color: "#fff",
@@ -252,7 +243,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     fontSize: 20,
     padding: 10,
-    backgroundColor: "#2E2B2B",
+    backgroundColor: "#3a8f61",
     marginLeft: 15,
     marginTop: 5,
     width: "92%",
@@ -271,29 +262,27 @@ const styles = StyleSheet.create({
   addSand: {
     width: "60%",
     marginHorizontal: "20%",
-    borderRadius: 25,
-    height: "55%",
-
-    backgroundColor: "#2E2B2B",
+    borderRadius: 20,
+    height: "65%",
+    marginTop: "0%",
+    marginBottom: "0%",
+    backgroundColor: "#3a8f61",
+    paddingHorizontal: 0,
   },
   orders: {
     width: "60%",
     marginHorizontal: "20%",
     borderRadius: 25,
-    height: "55%",
-    backgroundColor: "#2E2B2B",
+    height: "65%",
+    marginTop: 0,
+    marginBottom: 0,
+    backgroundColor: "#3a8f61",
+    paddingHorizontal: 0,
   },
-  invisible: {
-  color: "#2E2B2B",
-  backgroundColor: "#2E2B2B",
+  addSupp: {
+    backgroundColor: "#f47069"
+  }
 
-}
 });
 
 export default Menu;
-
-/*invisible: {
-  color: "#2E2B2B",
-  backgroundColor: "#2E2B2B",
-
-}*/
