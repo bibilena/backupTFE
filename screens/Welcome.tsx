@@ -19,14 +19,14 @@ const WelcomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           <View><Image source={require("../assets/logo.png")} style={styles.image} /></View>
           <View style={styles.buttons}>
             <Button
-              title="se connecter"
+              title="SE CONNECTER"
               buttonStyle={styles.button}
-              onPress={() => navigation.navigate("Sign In")}
+              onPress={() => navigation.navigate("Se connecter")}
             />
             <Button
-              title="créer un compte"
+              title="SE CRÉER UN COMPTE"
               buttonStyle={styles.button}
-              onPress={() => navigation.navigate("Sign Up")}
+              onPress={() => navigation.navigate("Se créer un compte")}
             />
           </View>
         </View>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    width: "80%",
+    width: "90%",
     borderRadius: 25,
     height: 50,
     marginTop: 20,

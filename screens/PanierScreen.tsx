@@ -1,11 +1,19 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { StyleSheet, Text, View, ScrollView, SafeAreaView, ToastAndroid, Platform } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  SafeAreaView,
+  ToastAndroid,
+  Platform,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { getCart } from "../redux/store";
 import { Button } from "react-native-elements";
 import { getDatabase, ref, set } from "firebase/database";
 import { getAuth } from "firebase/auth";
-import  rootReducer from "../redux/rootReducer"
+import rootReducer from "../redux/rootReducer";
 import { deleteAllFromCart } from "../redux/cartReducer";
 import { initCount } from "../redux/CountPanierReducer";
 import Toast from "react-native-toast-message";
@@ -14,57 +22,45 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const dispatch = useDispatch();
   const allCart = useSelector(getCart);
   const auth = getAuth();
-  var hours = new Date().getHours()
-  var minutes = new Date().getMinutes()
-  var sec = new Date().getSeconds()
-  var mili = new Date().getMilliseconds()
-  const testing =  JSON.stringify(allCart[0])
+  var hours = new Date().getHours();
+  var minutes = new Date().getMinutes();
+  var sec = new Date().getSeconds();
+  var mili = new Date().getMilliseconds();
+  const testEmpty = JSON.stringify(allCart[0]);
 
-  
+  var hoursMinutes =
+    ((2 + hours) * 10000000 + minutes * 100000 + sec * 1000 + mili) * -1;
 
-  var hoursMinutes = ((2+hours)*10000000+minutes*100000+sec*1000+mili)*-1
-
-  var total: number = 0
+  var total: number = 0;
 
   function retourner() {
+    if (testEmpty === "[]" || testEmpty === undefined) {
+      allCart.splice(0, 1);
+      return <Text style={styles.vide}>Le panier est vide</Text>;
+    } else if (allCart != []) {
+      var count: number;
 
-    if(testing === "[]" || testing === undefined){
-      allCart.splice(0,1)
-      return(
-        <Text style={styles.vide}>Le panier est vide
-      </Text>
-      )
-    }
-      
-    else if(allCart != []){
-      var count: number
-
-    return (
-      
-      <>
-        {allCart.map((element: any) => (
-          <View key={Math.random()}>
-            <Text style={styles.nomSand}>
-              {element.nomSand} {element.prixSand}€
-              <Text style={styles.invisible}>{total = total + parseFloat(element.prixSand)}</Text>
-            </Text>
-            <Text>{"\n"}</Text>
-          </View>
-        ))}
-      </>
-    );
-  }
-    else{
-      return(
-        
-        <Text style={styles.vide}>Le panier est vide
-      </Text>
-      
-      )
+      return (
+        <>
+          {allCart.map((element: any) => (
+            <View key={Math.random()}>
+              <Text style={styles.nomSand}>
+                {element.nomSand} {element.prixSand}€
+                <Text style={styles.invisible}>
+                  {(total = total + parseFloat(element.prixSand))}
+                </Text>
+              </Text>
+              <Text>{"\n"}</Text>
+            </View>
+          ))}
+        </>
+      );
+    } else {
+      return <Text style={styles.vide}>Le panier est vide</Text>;
     }
   }
-  function back(){
-    navigation.navigate("Menu")
+  function back() {
+    navigation.navigate("Menu");
   }
 
   const showToast = () => {
@@ -81,15 +77,14 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           allCart.map((element: any) =>
             set(ref(db, "orders/" + hoursMinutes), {
               allCart,
-              
             })
-            
           );
         }
-        dispatch(initCount())
-        if(Platform.OS === "android"){
-        showToast()}
-        back()
+        dispatch(initCount());
+        if (Platform.OS === "android") {
+          showToast();
+        }
+        back();
       }
     }
   }
@@ -176,21 +171,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   invisible: {
-    color: "#3a8f61"
+    color: "#3a8f61",
   },
   prixTotal: {
     color: "#f47069",
     fontSize: 25,
     width: "125%",
-    alignSelf: 'center',
+    alignSelf: "center",
     marginLeft: 45,
-    paddingTop: 15
+    paddingTop: 15,
   },
   vide: {
     color: "#f47069",
     fontSize: 30,
-    alignSelf: "center"
-  }
+    alignSelf: "center",
+  },
 });
 
 export default Panier;

@@ -12,9 +12,9 @@ export default function AuthStack() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        <Stack.Screen name="Sign In" component={SignInScreen} />
-        <Stack.Screen name="Sign Up" component={SignOutScreen} />
+        <Stack.Screen name="Bienvenue" component={WelcomeScreen} />
+        <Stack.Screen name="Se connecter" component={SignInScreen} />
+        <Stack.Screen name="Se créer un compte" component={SignOutScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

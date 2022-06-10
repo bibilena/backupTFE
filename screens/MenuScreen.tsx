@@ -20,6 +20,9 @@ import {
   DocumentData,
   SnapshotOptions,
   SnapshotMetadata,
+  setDoc,
+  doc,
+  updateDoc
 } from "firebase/firestore";
 import fireDB from "../config/firebase";
 
@@ -30,7 +33,9 @@ import {
   deleteFromCart,
   deleteAllFromCart,
 } from "../redux/cartReducer";
-import { countPlus, countMoins, initCount} from "../redux/CountPanierReducer"
+import { countPlus, countMoins } from "../redux/CountPanierReducer";
+import Toast from "react-native-root-toast";
+
 
 const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const [panier, setPanier] = useState(0);
@@ -38,7 +43,6 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const [sand, setSand]: any = useState([]);
   const dispatch = useDispatch();
   const countPanier = useSelector(getCountPanier);
-
 
   function signOutCartEmpty() {
     dispatch(deleteAllFromCart());
@@ -50,7 +54,7 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   }
   function removePanier(nom: string) {
     dispatch(deleteFromCart(nom));
-    dispatch(countMoins())
+    dispatch(countMoins());
   }
 
   useEffect(() => {
@@ -60,18 +64,21 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const userConnected = auth.currentUser;
 
   function adminButton(user: any) {
-    if (user.uid === "Geq4ULiVB7cwdteWJXquaPpLAog1" || user.uid ==="I6EADh845jeaMV2Ufmke3T2LtiP2") {
+    if (
+      user.uid === "Geq4ULiVB7cwdteWJXquaPpLAog1" ||
+      user.uid === "I6EADh845jeaMV2Ufmke3T2LtiP2"
+    ) {
       return (
         <>
           <Button
-            title="Ajouter Sandwich"
+            title="Modification Menu"
             buttonStyle={styles.addSand}
-            onPress={() => navigation.navigate("Ajout")}
+            onPress={() => navigation.navigate("Changement")}
           />
           <Button
             title={"Commande en cours "}
             buttonStyle={styles.orders}
-            onPress={() => navigation.navigate("Orders")}
+            onPress={() => navigation.navigate("Commandes en cours")}
           />
         </>
       );
@@ -98,25 +105,84 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     }
   }
 
+  function dispo(test: any){
+    if(test.available == true){
+      return(
+        <>
+        <Button
+                title="Ajouter"
+                onPress={() => addPanier(test.Nom, test.Prix)}
+                buttonStyle={styles.addSupp}
+              />
+              <Text> </Text>
+              <Button
+                buttonStyle={styles.addSupp}
+                title="Supprimer"
+                onPress={() => removePanier(test.Nom)}
+              />
+              </>
+      )
+    }
+    else{
+      return(
+      <>
+      <Text
+              
+              
+              style={styles.addSupp}
+            >épuisement du stock</Text>
+            </>)
+
+    }
+  }
+
+  async function toastPlusAvail(test: any, nom: any){
+    if(test.available == true) {
+      await updateDoc(doc(fireDB, "Sandwichs", nom), {
+        available: false,
+
+      });
+    }
+    else{
+      await setDoc(doc(fireDB, "Sandwichs", nom), {
+        available: true,
+
+      });
+    }
+    let toastAdd = Toast.show("état du stock changé", {
+      duration: Toast.durations.SHORT,
+    });
+  }
+
+  function butAdmin(user: any, text: any){
+    if (
+      user.uid === "Geq4ULiVB7cwdteWJXquaPpLAog1" ||
+      user.uid === "I6EADh845jeaMV2Ufmke3T2LtiP2"
+    ) {
+      return (
+        <Text style={styles.nomSand} onPress={() => toastPlusAvail(text, text.Nom)}>
+              {text.Nom}
+              <Text> </Text>
+              {dispo(text)}
+            </Text>
+      )
+  }
+  else{
+    return(
+    <Text style={styles.nomSand}>
+              {text.Nom}
+              <Text> </Text>
+              {dispo(text)}
+            </Text>
+  )}
+  }
+
   function addingSandwich() {
     return (
       <View key={Math.random()}>
         {sand.map((element: any) => (
-          
           <View style={styles.container2}>
-            <Text style={styles.nomSand}>
-              {element.Nom}<Text> </Text>
-              <Button
-                title="Ajouter"
-                onPress={() => addPanier(element.Nom, element.Prix)}
-                buttonStyle={styles.addSupp}
-              /><Text>  </Text>
-              <Button
-              buttonStyle={styles.addSupp}
-                title="Supprimer"
-                onPress={() => removePanier(element.Nom)}
-              />
-            </Text>
+            {butAdmin(userConnected, element)}
             <Text style={styles.TextIngredients}>
               Description: {element.Description}
               {"\n"}
@@ -181,7 +247,7 @@ const styles = StyleSheet.create({
   },
 
   container4: {
-    flex:3,
+    flex: 3,
     paddingVertical: "50%",
     //alignItems: "center",
     justifyContent: "center",
@@ -280,9 +346,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
   },
   addSupp: {
-    backgroundColor: "#f47069"
-  }
-
+    backgroundColor: "#f47069",
+  },
 });
 
 export default Menu;

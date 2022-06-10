@@ -17,8 +17,8 @@ export default function UserStack() {
         <Stack.Screen name="Menu" component={MenuScreen} />
         <Stack.Screen name="Personnaliser" component={PersonnaliserScreen} />
         <Stack.Screen name="Panier" component={PanierScreen} />
-        <Stack.Screen name="Ajout" component={AddSandScreen} />
-        <Stack.Screen name="Orders" component={OrdersScreen} />
+        <Stack.Screen name="Changement" component={AddSandScreen} />
+        <Stack.Screen name="Commandes en cours" component={OrdersScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
