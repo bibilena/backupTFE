@@ -5,8 +5,8 @@ import {
   View,
   ScrollView,
   SafeAreaView,
-  ToastAndroid,
   Platform,
+  LogBox
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { getCart } from "../redux/store";
@@ -16,7 +16,9 @@ import { getAuth } from "firebase/auth";
 import rootReducer from "../redux/rootReducer";
 import { deleteAllFromCart } from "../redux/cartReducer";
 import { initCount } from "../redux/CountPanierReducer";
-import Toast from "react-native-toast-message";
+import Toast from "react-native-root-toast";
+
+LogBox.ignoreAllLogs()
 
 const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -63,9 +65,6 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     navigation.navigate("Menu");
   }
 
-  const showToast = () => {
-    ToastAndroid.show("Commande validée!", ToastAndroid.SHORT);
-  };
 
   function sendOrder() {
     dispatch(deleteAllFromCart());
@@ -81,9 +80,9 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           );
         }
         dispatch(initCount());
-        if (Platform.OS === "android") {
-          showToast();
-        }
+        let toastAdd = Toast.show("Sandwich ajouté", {
+          duration: Toast.durations.SHORT,
+        });
         back();
       }
     }

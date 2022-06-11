@@ -8,11 +8,14 @@ import {
   TextInput,
   Alert,
   RefreshControl,
+  LogBox
 } from "react-native";
 import { getDatabase, ref, onValue, update, remove } from "firebase/database";
 
 import { Button } from "react-native-elements";
 import React from "react";
+
+LogBox.ignoreAllLogs()
 
 const OrdersScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const db = getDatabase();
@@ -79,7 +82,7 @@ const OrdersScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         <View>
           <Button
             buttonStyle={styles.valider}
-            title="valider dernière commande"
+            title="Valider dernière commande"
             onPress={() => reload()}
           />
         </View>

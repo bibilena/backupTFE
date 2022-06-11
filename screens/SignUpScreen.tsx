@@ -1,9 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, Alert } from "react-native";
+import { StyleSheet, Text, View, Image, Alert, LogBox } from "react-native";
 import { Button } from "react-native-elements";
 import { StackScreenProps } from "@react-navigation/stack";
 import { TextInput } from "react-native-gesture-handler";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
+LogBox.ignoreAllLogs()
 
 const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const [value, setValue] = React.useState({
@@ -48,7 +50,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titre}>Signup screen!</Text>
+      <Text style={styles.titre}>Se créer un compte!</Text>
 
       {!!value.error && (
         <View style={styles.error}>

@@ -1,8 +1,10 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, LogBox } from "react-native";
 import { Button } from "react-native-elements";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { TextInput } from "react-native-gesture-handler";
+
+LogBox.ignoreAllLogs()
 
 const auth = getAuth();
 

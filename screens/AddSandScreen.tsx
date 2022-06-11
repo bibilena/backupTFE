@@ -9,11 +9,15 @@ import {
   StyleSheet,
   TextInput,
   Alert,
+  LogBox
 } from "react-native";
 import { Button } from "react-native-elements";
 import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 import fireDB from "../config/firebase";
 import Toast from "react-native-root-toast";
+import { RadioButton } from "react-native-paper";
+
+LogBox.ignoreAllLogs()
 
 const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const [sand, setSand] = React.useState({
@@ -21,6 +25,8 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     prix: "",
     description: "",
   });
+  const [hotCold, setHotCold] = React.useState("froid")
+  var chalFroid = ""
 
   async function addData(nom: string, prix: string, description: string) {
     if (sand.nom === "" || sand.prix === "" || sand.description === "") {
@@ -35,13 +41,18 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 
       return;
     }
+    if(hotCold == "froid") chalFroid = "f"
+    else chalFroid = "c"
     try {
       const prix2 = parseFloat(prix);
       await setDoc(doc(fireDB, "Sandwichs", nom), {
         Nom: nom,
         Prix: prix2,
         Description: description,
+        available: true,
+        chal: chalFroid
       });
+
       let toastAdd = Toast.show("Sandwich ajouté", {
         duration: Toast.durations.SHORT,
       });
@@ -63,12 +74,16 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 
       return;
     }
+    if(hotCold == "froid") chalFroid = "f"
+    else chalFroid = "c"
     try {
       const prix2 = parseFloat(prix);
       await setDoc(doc(fireDB, "Sandwichs", nom), {
         Nom: nom,
         Prix: prix2,
         Description: description,
+        available: true,
+        chal: chalFroid
       });
       let toastMod = Toast.show("Sandwich modifié", {
         duration: Toast.durations.SHORT,
@@ -130,6 +145,24 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             value={sand.description}
             onChangeText={(text) => setSand({ ...sand, description: text })}
           />
+          <View style={styles.containerCheck}>
+            <RadioButton
+              uncheckedColor="white"
+              value="froid"
+              status={hotCold === "froid" ? "checked" : "unchecked"}
+              onPress={() => setHotCold("froid")}
+            ></RadioButton>
+            <Text style={styles.nomSand2}>Sandwich froid</Text>
+          </View>
+          <View style={styles.containerCheck}>
+            <RadioButton
+              uncheckedColor="white"
+              value="chaud"
+              status={hotCold === "chaud" ? "checked" : "unchecked"}
+              onPress={() => setHotCold("chaud")}
+            ></RadioButton>
+            <Text style={styles.nomSand2}>Sandwich chaud</Text>
+          </View>
         </View>
 
         <View style={styles.container4}>
@@ -210,6 +243,20 @@ const styles = StyleSheet.create({
   },
   error2: {
     alignItems: "center",
+  },
+  containerCheck: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 15
+  },
+  nomSand2: {
+    color: "#fff",
+    borderRadius: 15,
+    fontSize: 20,
+    backgroundColor: "#3a8f61",
+    marginLeft: 15,
+    width: "92%",
+    paddingRight: 50,
   },
 });
 

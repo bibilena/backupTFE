@@ -6,9 +6,12 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  LogBox
 } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Button } from "react-native-elements";
+
+LogBox.ignoreAllLogs()
 
 const WelcomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   return (
@@ -59,13 +62,13 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    width: "90%",
+    width: "83%",
     borderRadius: 25,
     height: 50,
     marginTop: 20,
     marginBottom: 10,
     backgroundColor: "#3a8f61",
-    paddingHorizontal: 25,
+    paddingHorizontal: 2,
   },
   image: {
     marginTop: 15,
