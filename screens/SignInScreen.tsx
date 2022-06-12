@@ -4,7 +4,7 @@ import { Button } from "react-native-elements";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { TextInput } from "react-native-gesture-handler";
 
-LogBox.ignoreAllLogs()
+LogBox.ignoreAllLogs();
 
 const auth = getAuth();
 
@@ -65,7 +65,11 @@ const SignInScreen = () => {
           />
         </View>
 
-        <Button title="Se connecter" buttonStyle={styles.button} onPress={signIn} />
+        <Button
+          title="Se connecter"
+          buttonStyle={styles.button}
+          onPress={signIn}
+        />
       </View>
     </View>
   );

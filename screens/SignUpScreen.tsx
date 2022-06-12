@@ -5,7 +5,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { TextInput } from "react-native-gesture-handler";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
-LogBox.ignoreAllLogs()
+LogBox.ignoreAllLogs();
 
 const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const [value, setValue] = React.useState({

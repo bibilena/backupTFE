@@ -8,16 +8,19 @@ import {
   TextInput,
   Alert,
   RefreshControl,
-  LogBox
+  LogBox,
 } from "react-native";
 import { getDatabase, ref, onValue, update, remove } from "firebase/database";
 
 import { Button } from "react-native-elements";
 import React from "react";
 
-LogBox.ignoreAllLogs()
+LogBox.ignoreAllLogs();
 
-const OrdersScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
+const OrdersScreen: React.FC<StackScreenProps<any>> = ({
+  navigation,
+  route,
+}) => {
   const db = getDatabase();
   const reference = ref(db, "orders");
 
@@ -35,7 +38,7 @@ const OrdersScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     wait(2000).then(() => setRefreshing(false));
   }
 
-  var total: number = 0
+  var total: number = 0;
   var whatID: string | null;
   function test() {
     onValue(reference, (snapshot) => {
@@ -47,7 +50,6 @@ const OrdersScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         table.push(childData);
       });
     });
-    
 
     return (
       <View>
@@ -58,15 +60,18 @@ const OrdersScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
                 <View key={Math.random()}>
                   <Text style={styles.ecriture}>
                     {element2.nomSand}: {element2.prixSand}€
-                    <Text style={styles.invisible}>l{total = total + element2.prixSand}</Text>
+                    <Text style={styles.invisible}>
+                      l{(total = total + element2.prixSand)}
+                    </Text>
                   </Text>
                 </View>
               );
             })}
-            
-            <Text style={styles.ecriture}>{"\n"}Total de la commande: {total}€</Text>
-            <Text style={styles.invisible}> {total = 0}</Text>
-            
+
+            <Text style={styles.ecriture}>
+              {"\n"}Total de la commande: {total}€
+            </Text>
+            <Text style={styles.invisible}> {(total = 0)}</Text>
           </View>
         ))}
       </View>
@@ -116,10 +121,10 @@ const styles = StyleSheet.create({
   valider: {
     marginHorizontal: 30,
     marginVertical: 15,
-    backgroundColor: "#f47069"
+    backgroundColor: "#f47069",
   },
   invisible: {
-      color: "#3a8f61"
+    color: "#3a8f61",
   },
 });
 export default OrdersScreen;

@@ -6,12 +6,12 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
-  LogBox
+  LogBox,
 } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Button } from "react-native-elements";
 
-LogBox.ignoreAllLogs()
+LogBox.ignoreAllLogs();
 
 const WelcomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   return (
@@ -19,7 +19,12 @@ const WelcomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
       <ScrollView style={styles.containerSc}>
         <View style={styles.container}>
           <Text style={styles.titre}>Bienvenue!</Text>
-          <View><Image source={require("../assets/logo.png")} style={styles.image} /></View>
+          <View>
+            <Image
+              source={require("../assets/logo.png")}
+              style={styles.image}
+            />
+          </View>
           <View style={styles.buttons}>
             <Button
               title="SE CONNECTER"
@@ -45,7 +50,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
   },
-  containerSc:{
+  containerSc: {
     flex: 1,
     backgroundColor: "#fff",
     width: "100%",
@@ -75,7 +80,6 @@ const styles = StyleSheet.create({
     marginRight: 5,
     width: 250,
     height: 250,
-
   },
 });
 

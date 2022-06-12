@@ -5,13 +5,13 @@ import {
   View,
   ScrollView,
   SafeAreaView,
-  LogBox
+  LogBox,
 } from "react-native";
 import { Button } from "react-native-elements";
 import { RadioButton, Checkbox } from "react-native-paper";
 import { StackScreenProps } from "@react-navigation/stack";
 
-LogBox.ignoreAllLogs()
+LogBox.ignoreAllLogs();
 
 function blancGris(a: String) {
   var b;
@@ -35,7 +35,19 @@ function beurreMayo(a: String) {
   }
 }
 
-function proteine(a: boolean, b: boolean, c: boolean, d: boolean, e: boolean, f: boolean, i: boolean, j: boolean, k: boolean, l: boolean, m: boolean) {
+function proteine(
+  a: boolean,
+  b: boolean,
+  c: boolean,
+  d: boolean,
+  e: boolean,
+  f: boolean,
+  i: boolean,
+  j: boolean,
+  k: boolean,
+  l: boolean,
+  m: boolean
+) {
   var n = 0;
   if (a == true) {
     n += 0.5;
@@ -76,13 +88,13 @@ function proteine(a: boolean, b: boolean, c: boolean, d: boolean, e: boolean, f:
 function crudites(a: boolean, b: boolean, c: boolean, d: boolean, e: boolean) {
   var f = 0;
   if (a == true) {
-    f += 0.10;
+    f += 0.1;
   }
   if (b == true) {
     f += 0.2;
   }
   if (c == true) {
-    f += 0.10;
+    f += 0.1;
   }
   if (d == true) {
     f += 0.3;
@@ -92,8 +104,7 @@ function crudites(a: boolean, b: boolean, c: boolean, d: boolean, e: boolean) {
   }
   return f;
 }
-export let prixFinal = 0
-
+export let prixFinal = 0;
 
 const PersonnaliserScreen: React.FC<StackScreenProps<any>> = ({
   navigation,
@@ -111,15 +122,14 @@ const PersonnaliserScreen: React.FC<StackScreenProps<any>> = ({
   const [prot9, setProt9] = React.useState(false);
   const [prot10, setProt10] = React.useState(false);
   const [prot11, setProt11] = React.useState(false);
-  const [crud, setCrud] = React.useState(false)
-  const [crud2, setCrud2] = React.useState(false)
-  const [crud3, setCrud3] = React.useState(false)
-  const [crud4, setCrud4] = React.useState(false)
-  const [crud5, setCrud5] = React.useState(false)
-  const [crud6, setCrud6] = React.useState(false)
-  const [crud7, setCrud7] = React.useState(false)
-  const [crud8, setCrud8] = React.useState(false)
-
+  const [crud, setCrud] = React.useState(false);
+  const [crud2, setCrud2] = React.useState(false);
+  const [crud3, setCrud3] = React.useState(false);
+  const [crud4, setCrud4] = React.useState(false);
+  const [crud5, setCrud5] = React.useState(false);
+  const [crud6, setCrud6] = React.useState(false);
+  const [crud7, setCrud7] = React.useState(false);
+  const [crud8, setCrud8] = React.useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -291,10 +301,6 @@ const PersonnaliserScreen: React.FC<StackScreenProps<any>> = ({
           </View>
         </View>
 
-
-
-
-
         <View style={styles.containerCheckDiff}>
           <View style={styles.containerCheck}>
             <Checkbox
@@ -381,9 +387,25 @@ const PersonnaliserScreen: React.FC<StackScreenProps<any>> = ({
         <View style={styles.containerPrix}>
           <Text style={styles.textPrix}>
             Le prix du sandwich est de{" "}
-            {prixFinal =blancGris(pain) +
-              beurreMayo(beurre) +
-              proteine(prot, prot2, prot3, prot4, prot5, prot6, prot7, prot8, prot9, prot10, prot11) + crudites(crud, crud2, crud5, crud7, crud8)}{" "}
+            {
+              (prixFinal =
+                blancGris(pain) +
+                beurreMayo(beurre) +
+                proteine(
+                  prot,
+                  prot2,
+                  prot3,
+                  prot4,
+                  prot5,
+                  prot6,
+                  prot7,
+                  prot8,
+                  prot9,
+                  prot10,
+                  prot11
+                ) +
+                crudites(crud, crud2, crud5, crud7, crud8))
+            }{" "}
             euros
           </Text>
         </View>
@@ -399,7 +421,6 @@ const PersonnaliserScreen: React.FC<StackScreenProps<any>> = ({
     </SafeAreaView>
   );
 };
-
 
 export default PersonnaliserScreen;
 

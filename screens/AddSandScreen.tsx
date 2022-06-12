@@ -9,7 +9,7 @@ import {
   StyleSheet,
   TextInput,
   Alert,
-  LogBox
+  LogBox,
 } from "react-native";
 import { Button } from "react-native-elements";
 import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
@@ -17,7 +17,7 @@ import fireDB from "../config/firebase";
 import Toast from "react-native-root-toast";
 import { RadioButton } from "react-native-paper";
 
-LogBox.ignoreAllLogs()
+LogBox.ignoreAllLogs();
 
 const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const [sand, setSand] = React.useState({
@@ -25,8 +25,8 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     prix: "",
     description: "",
   });
-  const [hotCold, setHotCold] = React.useState("froid")
-  var chalFroid = ""
+  const [hotCold, setHotCold] = React.useState("froid");
+  var chalFroid = "";
 
   async function addData(nom: string, prix: string, description: string) {
     if (sand.nom === "" || sand.prix === "" || sand.description === "") {
@@ -41,8 +41,8 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 
       return;
     }
-    if(hotCold == "froid") chalFroid = "f"
-    else chalFroid = "c"
+    if (hotCold == "froid") chalFroid = "f";
+    else chalFroid = "c";
     try {
       const prix2 = parseFloat(prix);
       await setDoc(doc(fireDB, "Sandwichs", nom), {
@@ -50,7 +50,7 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         Prix: prix2,
         Description: description,
         available: true,
-        chal: chalFroid
+        chal: chalFroid,
       });
 
       let toastAdd = Toast.show("Sandwich ajouté", {
@@ -74,8 +74,8 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 
       return;
     }
-    if(hotCold == "froid") chalFroid = "f"
-    else chalFroid = "c"
+    if (hotCold == "froid") chalFroid = "f";
+    else chalFroid = "c";
     try {
       const prix2 = parseFloat(prix);
       await setDoc(doc(fireDB, "Sandwichs", nom), {
@@ -83,7 +83,7 @@ const AddSandScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         Prix: prix2,
         Description: description,
         available: true,
-        chal: chalFroid
+        chal: chalFroid,
       });
       let toastMod = Toast.show("Sandwich modifié", {
         duration: Toast.durations.SHORT,
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
   containerCheck: {
     flexDirection: "row",
     alignItems: "center",
-    marginLeft: 15
+    marginLeft: 15,
   },
   nomSand2: {
     color: "#fff",

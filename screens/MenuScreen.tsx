@@ -8,12 +8,12 @@ import {
   Alert,
   RefreshControl,
   Platform,
-  LogBox
+  LogBox,
 } from "react-native";
 import { Button } from "react-native-elements";
 import { getAuth, signOut } from "firebase/auth";
 import { StackScreenProps } from "@react-navigation/stack";
- 
+
 import {
   collection,
   addDoc,
@@ -49,7 +49,6 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const wait = (timeout: number | undefined) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
   };
-
 
   function signOutCartEmpty() {
     dispatch(deleteAllFromCart());
@@ -115,7 +114,8 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   function dispo(test: any) {
     if (test.available == true) {
       return (
-        <><Text>   </Text>
+        <>
+          <Text> </Text>
           <Button
             title="Ajouter"
             onPress={() => addPanier(test.Nom, test.Prix)}
@@ -154,10 +154,8 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         duration: Toast.durations.SHORT,
       });
     }
-    
+
     console.log(test.available);
-    
-     
   }
 
   function butAdmin(user: any, text: any) {
@@ -186,53 +184,50 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     }
   }
 
-  function chaleur(chaudfroid: any){
-    if (chaudfroid.chal === "f"){
-      return(
+  function chaleur(chaudfroid: any) {
+    if (chaudfroid.chal === "f") {
+      return (
         <View style={styles.container2}>
-            {butAdmin(userConnected, chaudfroid)}
-            <Text style={styles.TextIngredients}>
-              Description : {chaudfroid.Description}
-              {"\n"}
-              {"\n"} Prix : {chaudfroid.Prix} €
-            </Text>
-            <Text>{"\n"}</Text>
-          </View>
-      )
+          {butAdmin(userConnected, chaudfroid)}
+          <Text style={styles.TextIngredients}>
+            Description : {chaudfroid.Description}
+            {"\n"}
+            {"\n"} Prix : {chaudfroid.Prix} €
+          </Text>
+          <Text>{"\n"}</Text>
+        </View>
+      );
     }
   }
 
-  function froid(chaudfroid: any){
-    if (chaudfroid.chal === "c"){
-      return(
+  function froid(chaudfroid: any) {
+    if (chaudfroid.chal === "c") {
+      return (
         <View style={styles.container2}>
-            {butAdmin(userConnected, chaudfroid)}
-            <Text style={styles.TextIngredients}>
-              Description : {chaudfroid.Description}
-              {"\n"}
-              {"\n"} Prix : {chaudfroid.Prix} €
-            </Text>
-            <Text>{"\n"}</Text>
-          </View>
-      )
+          {butAdmin(userConnected, chaudfroid)}
+          <Text style={styles.TextIngredients}>
+            Description : {chaudfroid.Description}
+            {"\n"}
+            {"\n"} Prix : {chaudfroid.Prix} €
+          </Text>
+          <Text>{"\n"}</Text>
+        </View>
+      );
     }
   }
 
   function addingSandwich() {
     return (
       <>
-      <Text style={styles.sandFroidChaud}>Sandwichs froids</Text>
-      <View key={Math.random()}>
-        {sand.map((element: any) => (
-          chaleur(element)
-        ))}
-      </View>
-      <Text style={styles.sandFroidChaud}>Sandwichs chauds</Text>
-      <View key={Math.random()}>
-      {sand.map((element: any) => (
-        froid(element)
-      ))}
-    </View></>
+        <Text style={styles.sandFroidChaud}>Sandwichs froids</Text>
+        <View key={Math.random()}>
+          {sand.map((element: any) => chaleur(element))}
+        </View>
+        <Text style={styles.sandFroidChaud}>Sandwichs chauds</Text>
+        <View key={Math.random()}>
+          {sand.map((element: any) => froid(element))}
+        </View>
+      </>
     );
   }
 
@@ -263,7 +258,7 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           style={styles.textPanier}
           onPress={() => navigation.navigate("Panier")}
         >
-          Panier ({countPanier}) 
+          Panier ({countPanier})
         </Text>
       </View>
     </SafeAreaView>
@@ -395,8 +390,8 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     color: "#f47069",
     alignItems: "center",
-    marginLeft: 15
-  }
+    marginLeft: 15,
+  },
 });
 
 export default Menu;
