@@ -227,7 +227,6 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         <View style={styles.container4}>
           <Text style={styles.prixTotal}>Prix Total: {total}€</Text>
           <Text style={styles.prixTotal}>
-            {" "}
             vous avez {compteurExiste()} point(s) de fidelité
           </Text>
           {reduc()}
@@ -314,8 +313,7 @@ const styles = StyleSheet.create({
   prixTotal: {
     color: "#f47069",
     fontSize: 25,
-    width: "125%",
-    alignSelf: "center",
+    width: "100%",
     paddingTop: 15,
   },
   vide: {

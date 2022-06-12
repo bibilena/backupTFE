@@ -99,8 +99,8 @@ const CheckoutScreen: React.FC<StackScreenProps<any>> = ({
     <View>
       <Text style={styles.littleTexte}>
         Le prix à regler est de {test}€. Pour l'ouverture de notre boutique,
-        nous arrondisons nos prix à l'unité inférieur, cela vous fera donc{" "}
-        {test2}€{" "}
+        nous arrondisons nos prix à l'unité inférieure, le prix final est donc{" "}
+        {test2}€.{" "}
       </Text>
       <TextInput
         placeholder="Nom"
