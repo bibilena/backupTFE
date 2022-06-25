@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   SafeAreaView,
   Alert,
   RefreshControl,
@@ -13,6 +12,8 @@ import {
 import { Button } from "react-native-elements";
 import { getAuth, signOut } from "firebase/auth";
 import { StackScreenProps } from "@react-navigation/stack";
+import { ScrollTo, Target, ScrollView } from '@nandorojo/anchor'
+
 
 import {
   collection,
@@ -204,13 +205,14 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     if (chaudfroid.chal === "c") {
       return (
         <View style={styles.container2}>
-          {butAdmin(userConnected, chaudfroid)}
+          {butAdmin(userConnected, chaudfroid)}   
           <Text style={styles.TextIngredients}>
             Description : {chaudfroid.Description}
             {"\n"}
             {"\n"} Prix : {chaudfroid.Prix} €
           </Text>
           <Text>{"\n"}</Text>
+          
         </View>
       );
     }
@@ -219,27 +221,63 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   function addingSandwich() {
     return (
       <>
+      <Target name="bottom-content">
         <Text style={styles.sandFroidChaud}>Sandwichs froids</Text>
         <View key={Math.random()}>
           {sand.map((element: any) => chaleur(element))}
         </View>
+        </Target>
+        <View style={styles.buttonNavigation}>
+        <ScrollTo target="bottom-content">
+          <Text style={styles.buttonnav}>Sandwichs froids</Text>
+        </ScrollTo>
+        <ScrollTo target="button-content">
+          <Text style={styles.buttonnav}>boutons commande </Text>
+        </ScrollTo>
+        </View>
+        <Target name="top-content">
         <Text style={styles.sandFroidChaud}>Sandwichs chauds</Text>
         <View key={Math.random()}>
           {sand.map((element: any) => froid(element))}
         </View>
+        </Target>
+
       </>
     );
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} >
         <View style={styles.containertitre}>
           <Text style={styles.titre}>Menu</Text>
+        </View>
+        <View style={styles.buttonNavigation}>
+          
+        
+        <ScrollTo target="top-content">
+          <Text style={styles.buttonnav}>Sandwichs chauds</Text>
+        </ScrollTo>
+        <ScrollTo target="button-content">
+          <Text style={styles.buttonnav}>bouton de commande</Text>
+        </ScrollTo>
         </View>
         {addingSandwich()}
 
         <View style={styles.container4}>
+        
+        <Target name="button-content">
+        </Target>
+
+        <View style={styles.buttonNavigation2}>
+        <ScrollTo target="bottom-content">
+          <Text style={styles.buttonnav}>Sandwichs froids</Text>
+        </ScrollTo>
+        <ScrollTo target="top-content">
+          <Text style={styles.buttonnav}>Sandwichs chauds </Text>
+        </ScrollTo>
+        </View>
+
           <Button
             title="Personnaliser"
             buttonStyle={styles.buttonPers}
@@ -247,7 +285,7 @@ const Menu: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           />
           {adminButton(userConnected)}
           <Button
-            title="Logout"
+            title="Logot"
             buttonStyle={styles.button}
             onPress={() => signOutCartEmpty()}
           />
@@ -288,7 +326,7 @@ const styles = StyleSheet.create({
     //alignItems: "center",
     justifyContent: "center",
     //alignItems: "flex-start",
-  },
+  }, 
 
   footer: {
     fontWeight: "bold",
@@ -392,6 +430,32 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginLeft: 15,
   },
+
+  buttonnav: {
+    backgroundColor: "#3a8f61",
+    alignSelf: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    alignItems: "center",
+    color: "white",
+    borderRadius: 25,
+    textAlign: "center",
+    marginBottom: "5%",
+    marginHorizontal: 10,
+  },
+
+  buttonNavigation: {
+    flexDirection: "row",
+    alignSelf: "center",
+    
+  },
+  buttonNavigation2: {
+    marginTop: -50,
+    flexDirection: "row",
+    alignSelf: "center",
+
+  }
+
 });
 
 export default Menu;

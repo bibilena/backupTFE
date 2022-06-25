@@ -24,6 +24,8 @@ const OrdersScreen: React.FC<StackScreenProps<any>> = ({
   const db = getDatabase();
   const reference = ref(db, "orders");
 
+  let counter = 0
+
   const wait = (timeout: number | undefined) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
   };
@@ -31,6 +33,7 @@ const OrdersScreen: React.FC<StackScreenProps<any>> = ({
   const [refreshing, setRefreshing] = React.useState(false);
 
   const table: any[] = [];
+  const dd: any[] = []
 
   function reload() {
     remove(ref(db, "/orders/" + whatID));
@@ -44,10 +47,14 @@ const OrdersScreen: React.FC<StackScreenProps<any>> = ({
     onValue(reference, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const childData = childSnapshot.val().allCart;
+        const commentaire = childSnapshot.val().commentaire
         const idData = childSnapshot.key;
         whatID = idData;
 
         table.push(childData);
+        dd.push(commentaire.text)
+        
+        
       });
     });
 
@@ -55,6 +62,11 @@ const OrdersScreen: React.FC<StackScreenProps<any>> = ({
       <View>
         {table.map((element) => (
           <View style={styles.nomSand}>
+            <Text style={styles.ecriture}>
+             <Text>Commentaire: { dd[counter]}</Text>
+                    <Text style={styles.invisible}>{counter = counter+1}</Text>
+                    <Text>{"\n"}</Text>
+                    </Text>
             {element.map((element2: any) => {
               return (
                 <View key={Math.random()}>
@@ -62,7 +74,7 @@ const OrdersScreen: React.FC<StackScreenProps<any>> = ({
                     {element2.nomSand}: {element2.prixSand}€
                     <Text style={styles.invisible}>
                       l{(total = total + element2.prixSand)}
-                    </Text>
+                    </Text>                   
                   </Text>
                 </View>
               );
@@ -80,10 +92,12 @@ const OrdersScreen: React.FC<StackScreenProps<any>> = ({
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView >
+      <ScrollView horizontal={true}>
         <View>
           <Text>{test()}</Text>
         </View>
+        </ScrollView>
         <View>
           <Button
             buttonStyle={styles.valider}
@@ -113,6 +127,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 5,
     paddingRight: 50,
+    marginRight: 1,
   },
   ecriture: {
     color: "#fff",
@@ -126,5 +141,6 @@ const styles = StyleSheet.create({
   invisible: {
     color: "#3a8f61",
   },
+
 });
 export default OrdersScreen;

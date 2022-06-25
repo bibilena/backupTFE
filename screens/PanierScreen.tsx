@@ -31,6 +31,7 @@ import {
 } from "firebase/firestore";
 import fireDB from "../config/firebase";
 import { useEffect, useState } from "react";
+import { TextInput } from "react-native-gesture-handler";
 
 LogBox.ignoreAllLogs();
 
@@ -44,6 +45,8 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   var mili = new Date().getMilliseconds();
   const testEmpty = JSON.stringify(allCart[0]);
   const [fid, setFid]: any = useState([]);
+  const [com, setCom]: any = useState("");
+
 
   const utilisateur = auth.currentUser;
   var utiConnect: string;
@@ -180,6 +183,7 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             allCart.map((element: any) =>
               set(ref(db, "orders/" + hoursMinutes), {
                 allCart,
+                commentaire: com
               })
             );
           }
@@ -224,6 +228,9 @@ const Panier: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           <Text style={styles.titre}>Panier</Text>
         </View>
         <View>{retourner()}</View>
+        <View>
+          <TextInput style={styles.nomSand2} placeholder="Commentaire" value={com} onChangeText={(text) => setCom({text})} />
+        </View>
         <View style={styles.container4}>
           <Text style={styles.prixTotal}>Prix Total: {total}€</Text>
           <Text style={styles.prixTotal}>
@@ -320,6 +327,18 @@ const styles = StyleSheet.create({
     color: "#f47069",
     fontSize: 30,
     alignSelf: "center",
+  },
+  nomSand2: {
+    color: "#fff",
+    borderRadius: 15,
+    fontSize: 20,
+    backgroundColor: "#3a8f61",
+    marginLeft: 15,
+    width: "92%",
+    paddingRight: 50,
+    paddingLeft: 20,
+    paddingVertical: 15
+    
   },
 });
 

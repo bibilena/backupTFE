@@ -1,5 +1,4 @@
 // Import the functions you need from the SDKs you need
-import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import "firebase/auth";
 import { getFirestore } from "firebase/firestore";
@@ -7,8 +6,7 @@ import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyB_3mS4EYXQb9i5v_QlXStFd9_GmaNLqpE",
   authDomain: "sandwicherie-tfe.firebaseapp.com",
-  databaseURL:
-    "https://sandwicherie-tfe-default-rtdb.europe-west1.firebasedatabase.app",
+  databaseURL:"https://sandwicherie-tfe-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "sandwicherie-tfe",
   storageBucket: "sandwicherie-tfe.appspot.com",
   messagingSenderId: "164120897087",
@@ -18,6 +16,5 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const fireDB = getFirestore(app);
-const analytics = getAnalytics(app);
 
-export default fireDB; analytics;
+export default fireDB;
